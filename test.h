@@ -1,12 +1,12 @@
 #pragma once//确实挺不错的
-#include <vector>//
-#include <list>//
-#include <queue>//
-#include <iostream>//
-using namespace std;//
-class Bullet;//
-class Enemy;//
-class Player;//
+#include <vector>
+#include <list>
+#include <queue>
+#include <iostream>
+using namespace std;
+class Bullet;
+class Enemy;
+class Player;
 list<Enemy>enemy_list;
 list<Bullet>bullet_list;
 enum DIR {
