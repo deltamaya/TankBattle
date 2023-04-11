@@ -4,7 +4,7 @@
 #include <queue>
 #include <iostream>
 using namespace std;
-class Bullet,sdfvghijubaiuhbdesfiuahiuwe;//test
+class Bullet;
 class Enemy;
 class Player;
 list<Enemy>enemy_list;
