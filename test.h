@@ -1,12 +1,12 @@
 #pragma once//确实挺不错的
-#include <vector>//
-#include <list>//
-#include <queue>//
-#include <iostream>//
-using namespace std;//
-class Bullet;//
-class Enemy;//
-class Player;//
+#include <vector>
+#include <list>
+#include <queue>
+#include <iostream>
+using namespace std;
+class Bullet;
+class Enemy;
+class Player;
 list<Enemy>enemy_list;
 list<Bullet>bullet_list;
 enum DIR {
@@ -29,7 +29,7 @@ public:
 		x_(a), y_(b) {};
 	Position() :
 		x_(0), y_(0) {};
-	Position operator+(const Position& another) {
+	Position operator+(const Position& another)const{
 		Position ret(x_, y_);
 		ret.x_ += another.x_;
 		ret.y_ += another.y_;
@@ -38,8 +38,8 @@ public:
 	bool operator==(const Position& another)const {
 		return x_ == another.x_ && y_ == another.y_;
 	}
-	bool Walkable(const vector<vector<int>>& matrix)const {
-		return x_ > 0 && x_ < matrix.size() && y_>0 && y_ < matrix[0].size() && !matrix[x_][y_];
+	[[nodiscard]]bool Walkable(const vector<vector<int>>& matrix)const {
+		return x_ >= 0 && x_ < matrix.size() && y_>=0 && y_ < matrix[0].size() && !matrix[x_][y_];
 	}
 };
 const vector<Position>DIRECTION = {{-1,0},{1,0},{0,-1},{0,1} };
@@ -87,6 +87,8 @@ public:
 	Position direction_;
 	int hp_;
 	int fire_delay_;
+	Player(Position cur_position, Position direction) :
+		cur_position_(cur_position), direction_(direction), hp_(2), fire_delay_(0) {};
 	void Fire() {
 		Bullet player_bullet(cur_position_,direction_,true);
 		fire_delay_ = MAX_FIRE_DELAY;
@@ -105,8 +107,7 @@ public:
 	}
 };
 
-Player player;
-
+Player player({ 0,0 }, { 0,0 });
 
 class Node {
 public:
@@ -119,8 +120,13 @@ public:
 		pre_node_(pre_node),
 		cur_cost_(cur_cost),
 		predict_cost_(predict_cost) {};
-	bool operator<(const Node& another_node)const {
-		return cur_cost_ + predict_cost_ < another_node.cur_cost_ + predict_cost_;
+};
+
+struct cmp
+{
+	bool operator()(Node*& a, Node*& b) const
+	{
+		return a->cur_cost_ + a->predict_cost_ > b->cur_cost_ + b->predict_cost_;
 	}
 };
 int Manhattan(const Position& cur_position, const Position& destination) {
@@ -128,7 +134,8 @@ int Manhattan(const Position& cur_position, const Position& destination) {
 }
 DIR AStarAlgorithm(const vector<vector<int>>& matrix, const Position& begin_position, const Position& destination) {
 	vector<vector<bool>>known(matrix.size(), vector<bool>(matrix[0].size(), false));
-	priority_queue<Node*>frontier;
+	priority_queue<Node*,vector<Node*>,cmp>frontier;
+	queue<Node*>possible_node;
 	auto begin_node = new Node(begin_position, nullptr, 0, Manhattan(begin_position, destination));
 	known[begin_position.x_][begin_position.y_] = true;
 	frontier.push(begin_node);
@@ -136,24 +143,21 @@ DIR AStarAlgorithm(const vector<vector<int>>& matrix, const Position& begin_posi
 		auto cur_node = frontier.top();
 		if (cur_node->position_ == destination)break;
 		frontier.pop();
+		possible_node.push(cur_node);
 		for (auto& dir : DIRECTION) {
 			auto next = new Node(cur_node->position_ + dir, cur_node, cur_node->cur_cost_ + 1, Manhattan(cur_node->position_ + dir, destination));
 			if (next->position_.Walkable(matrix) && !known[next->position_.x_][next->position_.y_]) {
 				known[next->position_.x_][next->position_.y_] = true;
 				frontier.push(next);
 			}
+			else {
+				delete next;
+			}
 		}
 	}
 	auto node = frontier.top();
-	frontier.pop();
-	while (!frontier.empty()) {
-		delete frontier.top();
-		frontier.pop();
-	}
-	while (!(node->pre_node_->position_ == begin_position)) {
-		auto pre = node->pre_node_;
-		delete node;
-		node = pre;
+	while (node->pre_node_&&!(node->pre_node_->position_ == begin_position)) {
+		node = node->pre_node_;
 	}
 	DIR ret=UP;
 	if (node->position_.x_ == begin_position.x_ - 1)ret = UP;
@@ -161,11 +165,16 @@ DIR AStarAlgorithm(const vector<vector<int>>& matrix, const Position& begin_posi
 	else if (node->position_.y_ == begin_position.y_ - 1)ret = LEFT;
 	else if (node->position_.y_ == begin_position.y_ + 1)ret = RIGHT;
 	else {
-		cerr <<"In line :" << __LINE__ << "  Unknown error!\n";
-		system("pause");
+		cout <<"In line :" << __LINE__ << "  two position are same!\n";
 	}
-	delete node->pre_node_;
-	delete node;
+	while (!possible_node.empty()) {
+		delete possible_node.front();
+		possible_node.pop();
+	}
+	while (!frontier.empty()) {
+		delete frontier.top();
+		frontier.pop();
+	}
 	return ret;
 }
 class Enemy {
@@ -175,6 +184,8 @@ public:
 	Position direction_;
 	int hp_;
 	int fire_delay_;
+	Enemy(Position cur_position, Position direction) :
+		cur_position_(cur_position), direction_(direction), hp_(2), fire_delay_(0) {};
 	void Hit() {
 		--hp_;
 	}
