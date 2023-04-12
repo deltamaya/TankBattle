@@ -6,5 +6,6 @@ int main() {
 	cout << "ÔÙ´Î²âÊÔ" << endl;
 	cout << "ÖØ¸´²âÊÔ" << endl;
 	cout << "ÓÖÒ»´Î²âÊÔ" << endl;
+	cout << "²âÊÔÍê±Ï" << endl;
 	cout << ch;
 }
