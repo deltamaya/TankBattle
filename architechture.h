@@ -116,7 +116,8 @@ bool ReadData(int &level, list<Enemy>& enemy_list, list<Bullet>& bullet_list, Pl
 
 //方向的枚举，配合DIRECTION使用
 enum DIR {
-	UP = 0,
+	NONE=0,
+	UP = 1,
 	DOWN,
 	LEFT,
 	RIGHT

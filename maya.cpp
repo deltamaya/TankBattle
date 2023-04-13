@@ -11,10 +11,10 @@ void Enemy::FireCheck(const vector<vector<int>>& map, list<Bullet>bullet_list, P
 	if (cur_position_.x_ == target_position.x_) {
 		int wall_cnt = 0;
 		int low_y = cur_position_.y_, high_y = target_position.y_;
-		direction_ = DIRECTION[RIGHT];
+		direction_ = RIGHT;
 		if (low_y > high_y) {
 			swap(low_y, high_y);
-			direction_ = DIRECTION[LEFT];
+			direction_ = LEFT;
 		}
 		for (int i = low_y; i <= high_y; ++i) {
 			if (map[cur_position_.x_][i] == WALL)++wall_cnt;
@@ -24,10 +24,10 @@ void Enemy::FireCheck(const vector<vector<int>>& map, list<Bullet>bullet_list, P
 	if (cur_position_.y_ == target_position.y_) {
 		int wall_cnt = 0;
 		int low_x = cur_position_.x_, high_x = target_position.x_;
-		direction_ = DIRECTION[UP];
+		direction_ = UP;
 		if (low_x > high_x) {
 			swap(low_x, high_x);
-			direction_ = DIRECTION[DOWN];
+			direction_ =DOWN;
 		}
 		for (int i = low_x; i <= high_x; ++i) {
 			if (map[i][cur_position_.y_] == WALL)++wall_cnt;
@@ -48,7 +48,8 @@ DIR AStarAlgorithm(const vector<vector<int>>& matrix, const Position& begin_posi
 		if (cur_node->position_ == destination)break;
 		frontier.pop();
 		possible_node.push(cur_node);
-		for (auto& dir : DIRECTION) {
+		for (int d = UP; d != RIGHT;++d) {
+			auto dir = DIRECTION[d];
 			auto next = new Node(cur_node->position_ + dir, cur_node, cur_node->cur_cost_ + 1, Manhattan(cur_node->position_ + dir, destination));
 			if (next->position_.Walkable(matrix) && !known[next->position_.x_][next->position_.y_]) {
 				known[next->position_.x_][next->position_.y_] = true;
@@ -63,14 +64,12 @@ DIR AStarAlgorithm(const vector<vector<int>>& matrix, const Position& begin_posi
 	while (node->pre_node_ && !(node->pre_node_->position_ == begin_position)) {
 		node = node->pre_node_;
 	}
-	DIR ret = UP;
+	DIR ret;
 	if (node->position_.x_ == begin_position.x_ - 1)ret = UP;
 	else if (node->position_.x_ == begin_position.x_ + 1)ret = DOWN;
 	else if (node->position_.y_ == begin_position.y_ - 1)ret = LEFT;
 	else if (node->position_.y_ == begin_position.y_ + 1)ret = RIGHT;
-	else {
-		cout << "In line :" << __LINE__ << "  two position are same!\n";
-	}
+	else ret = NONE;
 	while (!possible_node.empty()) {
 		delete possible_node.front();
 		possible_node.pop();
