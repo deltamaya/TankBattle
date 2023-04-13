@@ -11,7 +11,6 @@ void ShowMap(const int& level,
     IMAGE base;
     IMAGE wall;
     IMAGE grass;
-    IMAGE water;
     IMAGE camp;
     IMAGE MyTankU;
     IMAGE MyTankD;
@@ -24,7 +23,6 @@ void ShowMap(const int& level,
     loadimage(&base, _T("./terrain\\base.jpg"));
     loadimage(&wall, _T("./terrain\\wall.jpg"));
     loadimage(&grass, _T("./terrain\\grassland.jpg"));
-    loadimage(&water, _T("./terrain\\water.jpg"));
     loadimage(&camp, _T("./terrain\\camp.jpg"));
     loadimage(&MyTankU, _T("./tank\\MyTankU.jpg"));
     loadimage(&MyTankD, _T("./tank\\MyTankD.jpg"));
