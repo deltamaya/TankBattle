@@ -152,7 +152,7 @@ public:
 	}
 };
 
-const vector<Position>DIRECTION = { {-1,0},{1,0},{0,-1},{0,1} };
+const vector<Position>DIRECTION = { {0,0}, {-1,0},{1,0},{0,-1},{0,1} };
 //×Óµ¯Àà
 class Bullet {
 public:
