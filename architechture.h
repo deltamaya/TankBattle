@@ -126,7 +126,7 @@ enum Grid {
 	SPACE = 0,
 	WALL = 1,
 	BASE = 2,
-	CAMP = 3,
+	CAMP = 3
 };
 //Œª÷√¿‡
 class Position {
