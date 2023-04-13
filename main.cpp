@@ -35,7 +35,7 @@ int main() {
 	//包含游戏中所有子弹的链表
 	list<Bullet>bullet_list;
 	//玩家
-	Player player({0,0},{0,0});
+	Player player({0,0},NONE);
 	//基地位置
 	Position base_position;
 	//游玩时间

@@ -116,7 +116,8 @@ bool ReadData(int &level, list<Enemy>& enemy_list, list<Bullet>& bullet_list, Pl
 
 //方向的枚举，配合DIRECTION使用
 enum DIR {
-	UP = 0,
+	NONE=0,
+	UP = 1,
 	DOWN,
 	LEFT,
 	RIGHT
@@ -151,15 +152,15 @@ public:
 	}
 };
 
-const vector<Position>DIRECTION = { {-1,0},{1,0},{0,-1},{0,1} };
+const vector<Position>DIRECTION = { {0,0}, {-1,0},{1,0},{0,-1},{0,1} };
 //子弹类
 class Bullet {
 public:
 	Position cur_position_;//当前位置
-	Position direction_;//方向
+	DIR direction_;//方向
 	bool friendly_;//是否友善
 	//初始化的时候传入开火单位的位置和方向，自己发射的子弹friendly为true，敌人发射的为false
-	Bullet(list<Bullet>bullet_list,Position cur_position, Position direction, bool friendly) :
+	Bullet(list<Bullet>bullet_list,Position cur_position, DIR direction, bool friendly) :
 		cur_position_(cur_position), direction_(direction), friendly_(friendly) {
 		bullet_list.push_back(*this);
 	};
@@ -170,10 +171,10 @@ class Player {
 	static const int MAX_FIRE_DELAY = 500;//最大延时，单位为毫秒
 public:
 	Position cur_position_;//当前位置
-	Position direction_;//当前方向
+	DIR direction_;//当前方向
 	int hp_;//血量
 	int fire_delay_;//当前射击延时
-	Player(Position cur_position, Position direction) :
+	Player(Position cur_position, DIR direction) :
 		cur_position_(cur_position), direction_(direction), hp_(2), fire_delay_(0) {};
 	void Fire(list<Bullet>bullet_list) {//开火函数，初始化一个子弹，并将射击延时设置为最大延时
 		Bullet player_bullet(bullet_list, cur_position_, direction_, true);
@@ -183,7 +184,7 @@ public:
 		--hp_;
 	}
 	void Move(const vector<vector<int>>&map) {//移动函数，当下一个格子可以走，就更改位置
-		auto next = cur_position_ + direction_;
+		auto next = cur_position_ + DIRECTION[ direction_];
 		if (next.Walkable(map)) {
 			cur_position_ = next;
 		}
@@ -227,11 +228,11 @@ class Enemy {
 	static const int MAX_FIRE_DELAY = 500;
 public:
 	Position cur_position_;
-	Position direction_;
+	DIR direction_;
 	int hp_;
 	int fire_delay_;
 	bool target_;//目标，true为玩家，false为基地
-	Enemy(list<Enemy>enemy_list,Position cur_position, Position direction) :
+	Enemy(list<Enemy>enemy_list,Position cur_position, DIR direction) :
 		cur_position_(cur_position), direction_(direction), hp_(2), fire_delay_(0), target_(1) {
 		enemy_list.push_back(*this);
 	};
@@ -246,11 +247,11 @@ public:
 	void FireCheck(const vector<vector<int>>& map, list<Bullet>bullet_list, Player& player, Position& base_position);
 	//敌人移动，先向初始方向移动一次，然后通过寻路算法更新方向
 	void Move(const vector<vector<int>>& map,Player& player,Position& base_position) {
-		cur_position_ = cur_position_ + direction_;
+		cur_position_ = cur_position_ + DIRECTION[direction_];
 		DIR dir;
 		if (target_) dir = AStarAlgorithm(map, cur_position_, player.cur_position_);
 		else dir = AStarAlgorithm(map, cur_position_, base_position);
-		direction_ = DIRECTION[dir];
+		direction_ = dir;
 	}
 	void Reload() {
 		if (fire_delay_ > 0)--fire_delay_;
