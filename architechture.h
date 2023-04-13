@@ -4,59 +4,57 @@
 #include <list>
 #include <queue>
 #include <iostream>
+class Bullet;
+class Enemy;
+class Player;
+class Position;
 using namespace std;
 //---view---
 
 
-//负责人：
+//负责人：生之诺
 //功能：展示主界面，提供用户几个按钮，可以选择开始游戏进入选择关卡界面
 //		可以进入设置界面、开发者成员界面以及退出游戏按钮
 //参数：void
-//返回值：void
-void MainMenu();
+//返回值：玩家的选择
+int MainMenu();
 
-//负责人：
+//负责人：穗心
 //功能：展示设置界面，用户可以调整bgm、音效的大小
+//参数：音量大小，音效大小
+//返回值：void
+void Settings(int& music_volume,int& sound_volume);
+
+//负责人：王大
+//功能：展示开发者成员界面，可以返回主界面
 //参数：void
 //返回值：void
-void Settings();
-
-//负责人：
-//功能：展示开发者成员界面，可以返回主界面
-//参数：
-//返回值：
 void Developers();
 
-//负责人：
+//负责人：王大
 //功能：展示帮助页面，向玩家展示操作玩法，可以返回主界面
-//参数：
-//返回值：
+//参数：void
+//返回值：void
 void Help();
 
-void ContinueGame();
+//负责人：kong
+//功能：提示玩家有未完成的游戏，是否继续
+//参数：void
+//返回值：如果玩家选择继续游戏返回true，如果不继续游戏返回false
+bool ContinueGame();
 
-//负责人：
+//负责人：穗心
 //功能：向玩家展示选择关卡界面，可以返回主界面
-//		在玩家选择关卡之后：
-//			1.使用上面的地图初始化map（在maya.h中）
-//			2.根据地图初始化base_position
-//			3.进入NewGame函数
-//参数：
-//返回值：
-void LevelSelect();
+//参数：void
+//返回值：玩家选择的关卡，返回0代表返回主界面，1~3代表选择的关卡
+int LevelSelect();
 
-//负责人：
-//功能：初始化地图，使用上面的vector
-//参数：
-//返回值：
-void InitMap();
-
-//***关键***
-//负责人：
-//功能：
-//参数：
-//返回值：
-void ShowMap();
+//***重要***
+//负责人：诺诺
+//功能：向玩家展示游戏界面
+//参数：关卡id,敌人链表，子弹链表，玩家，基地位置，地图，游玩时间
+//返回值：void
+void ShowMap(const int& level, const list<Enemy>& enemy_list, const list<Bullet>& bullet_list, const Player& player, const Position& base_position, const vector<vector<int>>& map, const time_t& play_time);
 
 //---view---
 
@@ -64,43 +62,59 @@ void ShowMap();
 //---service---
 
 
-//负责人：
-//功能：
-//参数：
-//返回值：
-void NewGame();
+//+main.cpp中的三个地图
+//负责人：asd
+//功能：初始化地图，使用level_x初始化map,初始化基地位置，敌人，玩家，游玩时间
+//参数：关卡id,敌人链表，子弹链表，玩家，基地位置，地图，游玩时间
+//返回值：void
+void InitMap(const int& level, list<Enemy>& enemy_list, list<Bullet>& bullet_list, Player& player, Position& base_position, vector<vector<int>>& map, time_t& play_time);
 
-//负责人：
-//功能：
-//参数：
-//返回值：
-void GameWin();
 
-//负责人：
-//功能：
-//参数：
-//返回值：
+
+//***重要***
+//负责人：楚孟献
+//功能：进行游戏，调用showmap展示界面，调用update更新游戏状态，调用bulletjudge进行判定
+// 如果玩家暂停，显示暂停页面。
+// 如果玩家退出，调用SaveData后返回主界面。
+// 游戏正常结束，向玩家展示结算界面，调用savedata，然后返回主界面
+//参数：关卡id,敌人链表，子弹链表，玩家，基地位置，地图，游玩时间
+//返回值：void
+void NewGame(const int level, list<Enemy>& enemy_list, list<Bullet> &bullet_list, Player& player, const Position& base_position, vector<vector<int>>& map, time_t& play_time);
+
+//***重要***
+//负责人：asd
+//功能：获取玩家输入，更新游戏状态（reload ,move等）
+//参数：关卡id,敌人链表，子弹链表，玩家，基地位置，地图，游玩时间
+//返回值：void
+void Update(const int level, list<Enemy>& enemy_list, list<Bullet>& bullet_list, Player& player, const Position& base_position, vector<vector<int>>& map, time_t& play_time);
+
+//负责人：诺诺
+//功能：向玩家展示获胜界面
+//参数：游玩时间
+//返回值：void
+void GameWin(const time_t &play_time);
+
+//负责人：诺诺
+//功能：向玩家展示失败界面
+//参数：void
+//返回值：void
 void GameLose();
 
-//负责人：
-//功能：
-//参数：
-//返回值：
-void SaveData();
+//负责人：星铉
+//功能：将游戏数据写入存档当中
+//参数：敌人，子弹，玩家，地图，游玩时间
+//返回值：void
+void SaveData(const int level,const list<Enemy>& enemy_list,const list<Bullet>&bullet_list,const Player& player,const Position& base_position,const vector<vector<int>>& map,const time_t& play_time);
 
-//负责人：
-//功能：
-//参数：
-//返回值：
-void ReadData();
+//负责人：星铉
+//功能：将游戏信息读取放到参数中，注意：如果这个存档已经游玩结束，返回false
+//参数：敌人，子弹，玩家，地图，游玩时间
+//返回值：如果读取成功返回true，如果失败返回false
+bool ReadData(int &level, list<Enemy>& enemy_list, list<Bullet>& bullet_list, Player& player,Position& base_position, vector<vector<int>>& map, time_t& play_time);
 
 //---service---
 
-class Bullet;
-class Enemy;
-class Player;
-
-//方向的枚举，配合下面的DIRECTION使用
+//方向的枚举，配合DIRECTION使用
 enum DIR {
 	UP = 0,
 	DOWN,
@@ -243,9 +257,10 @@ public:
 	}
 };
 
-//子弹判定算法，敌方子弹杀死玩家或击中基地就失败，自动调用GameLose函数
+//子弹判定算法，敌方子弹杀死玩家或击中基地就失败
 //击中墙就摧毁墙，友方子弹击中敌人就降低其hp
-void JudgeBullets(vector<vector<int>>& map, Player& player, Position& base_position,list<Bullet>bullet_list, list<Enemy>enemy_list);
+//返回0表示游戏继续，返回1表示游戏失败，返回2表示胜利
+int JudgeBullets(vector<vector<int>>& map, Player& player, Position& base_position,list<Bullet>bullet_list, list<Enemy>enemy_list);
 
 
 #endif // ARCHITECHTURE
