@@ -81,29 +81,33 @@ DIR AStarAlgorithm(const vector<vector<int>>& matrix, const Position& begin_posi
 	return ret;
 }
 int JudgeBullets(vector<vector<int>>& map,Player& player, Position& base_position, list<Bullet>bullet_list, list<Enemy>enemy_list) {
-	for (auto iter = bullet_list.begin(); iter != bullet_list.end(); ++iter) {
+	for (auto iter = bullet_list.begin(); iter != bullet_list.end(); ) {
+		if (map[(*iter).cur_position_.x_][(*iter).cur_position_.y_] == BASE) {
+			iter = bullet_list.erase(iter);
+			continue;
+		}
 		if (map[(*iter).cur_position_.x_][(*iter).cur_position_.y_] == WALL) {
 			map[(*iter).cur_position_.x_][(*iter).cur_position_.y_] = SPACE;
-			bullet_list.erase(iter);
+			iter=bullet_list.erase(iter);
 			continue;
 		}
 		if ((*iter).cur_position_ == player.cur_position_ && !(*iter).friendly_) {
 			player.Hit();
 			if (player.hp_ == 0)return 1;
-			bullet_list.erase(iter);
+			iter=bullet_list.erase(iter);
 			continue;
 		}
 		if ((*iter).cur_position_ == base_position && !(*iter).friendly_) {
 			return 1;
 		}
-		for (auto e_iter = enemy_list.begin(); e_iter != enemy_list.end(); ++e_iter) {
+		for (auto e_iter = enemy_list.begin(); e_iter != enemy_list.end(); ) {
 			if ((*iter).cur_position_ == (*e_iter).cur_position_ && (*iter).friendly_) {
 				(*e_iter).Hit();
 				if (((*e_iter).hp_) == 0) {
-					enemy_list.erase(e_iter, ++e_iter);
+					e_iter=enemy_list.erase(e_iter);
 				}
-				bullet_list.erase(iter);
-				continue;
+				iter=bullet_list.erase(iter);
+				break;
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 #ifndef ARCHITECHTURE
 #define ARCHITECHTURE
+#define _CRT_SECURE_NO_WARNINGS 
 #include <vector>
 #include <list>
 #include <queue>
@@ -43,7 +44,7 @@ void Help();
 //返回值：如果玩家选择继续游戏返回true，如果不继续游戏返回false
 bool ContinueGame();
 
-//负责人：穗心
+//负责人：星铉
 //功能：向玩家展示选择关卡界面，可以返回主界面
 //参数：void
 //返回值：玩家选择的关卡，返回0代表返回主界面，1~3代表选择的关卡
@@ -127,6 +128,7 @@ enum Grid {
 	SPACE = 0,
 	WALL = 1,
 	BASE = 2,
+	CAMP = 3,
 };
 //位置类
 class Position {
