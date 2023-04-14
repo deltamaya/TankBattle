@@ -1,5 +1,5 @@
-#include <conio.h>
 #include <easyx.h>
+#include <iostream>
 #include "architechture.h"
 
 void ShowMap(const int& level,
