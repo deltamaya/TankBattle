@@ -1,5 +1,7 @@
 #include "architechture.h"
 #include <fstream>
+#include <graphics.h>
+#include <conio.h>
 
 void SaveData(const int level, const list<Enemy>& enemy_list, const list<Bullet>& bullet_list, const Player& player, const Position& base_position, const vector<vector<int>>& map, const time_t& play_time)
 {
@@ -108,4 +110,56 @@ bool ReadData(int& level, list<Enemy>& enemy_list, list<Bullet>& bullet_list, Pl
 	inFile.close();//关闭文件
 
 	return true;
+}
+
+int LevelSelect()
+{
+	setbkcolor(BLACK);
+	setfillcolor(WHITE);
+	BeginBatchDraw();//开始批量绘图
+	fillrectangle(40, 150, 190, 450);
+	fillrectangle(230, 150, 380, 450);
+	fillrectangle(420, 150, 570, 450);
+	fillrectangle(610, 150, 760, 450);
+	settextcolor(BLACK);
+	settextstyle(20, 0, "楷体");
+	setbkmode(TRANSPARENT);
+
+	//文字居中表示
+	char arr1[] = "返回菜单界面";
+	int width1 = 150 / 2 - textwidth(arr1) / 2;
+	int height1 = 300 / 2 - textheight(arr1) / 2;
+	outtextxy(40 + width1, 150 + height1, arr1);
+	char arr2[] = "废墟楼";
+	int width2 = 150 / 2 - textwidth(arr2) / 2;
+	int height2 = 300 / 2 - textheight(arr2) / 2;
+	outtextxy(230 + width2, 150 + height2, arr2);
+	char arr3[] = "丛林";
+	int width3 = 150 / 2 - textwidth(arr3) / 2;
+	int height3 = 300 / 2 - textheight(arr3) / 2;
+	outtextxy(420 + width3, 150 + height3, arr3);
+	char arr4[] = "军事基地";
+	int width4 = 150 / 2 - textwidth(arr4) / 2;
+	int height4 = 300 / 2 - textheight(arr4) / 2;
+	outtextxy(610 + width4, 150 + height4, arr4);
+	FlushBatchDraw();//结束批量绘图
+
+	ExMessage m;
+	while (1)
+	{
+		m = getmessage(EX_MOUSE);
+		switch (m.message)
+		{
+		case WM_LBUTTONDOWN:
+			if (m.x > 40 && m.x < 190 && m.y > 150 && m.y < 450)
+				return 0;
+			else if (m.x > 230 && m.x < 380 && m.y > 150 && m.y < 450)
+				return 1;
+			else if (m.x > 420 && m.x < 570 && m.y > 150 && m.y < 450)
+				return 2;
+			else if (m.x > 610 && m.x < 760 && m.y > 150 && m.y < 450)
+				return 3;
+		}
+	}
+
 }
