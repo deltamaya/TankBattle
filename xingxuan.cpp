@@ -114,9 +114,11 @@ bool ReadData(int& level, list<Enemy>& enemy_list, list<Bullet>& bullet_list, Pl
 
 int LevelSelect()
 {
-	setbkcolor(BLACK);
-	setfillcolor(WHITE);
+	setbkcolor(BLACK);//设置黑色背景
+	cleardevice();//用背景色清空设备
+	setfillcolor(WHITE);//选择按钮设置为白色
 	BeginBatchDraw();//开始批量绘图
+	//绘制按钮
 	fillrectangle(40, 150, 190, 450);
 	fillrectangle(230, 150, 380, 450);
 	fillrectangle(420, 150, 570, 450);
