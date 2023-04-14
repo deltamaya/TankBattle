@@ -115,6 +115,7 @@ bool ReadData(int& level, list<Enemy>& enemy_list, list<Bullet>& bullet_list, Pl
 int LevelSelect()
 {
 	setbkcolor(BLACK);
+	cleardevice();
 	setfillcolor(WHITE);
 	BeginBatchDraw();//开始批量绘图
 	fillrectangle(40, 150, 190, 450);
