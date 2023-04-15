@@ -105,123 +105,184 @@ void ShowMap(const int& level,
 }
 
 void GameWin(const time_t& play_time) {
+    // 图片声明并加载
     IMAGE GameWin;
     loadimage(&GameWin, "./interface\\GameOver.jpg");
-    initgraph(800, 600);
-    enum Button { LEFT = 65, RIGHT = 68, SPACE = 32, ESC = 27 };
-    int flag = LEFT;
+    // 根据游戏用时生成胜利信息
     char str[100];
-    sprintf(str, "You win in %d seconds", play_time);
+    sprintf(str, "You win in %d seconds!", play_time);
+    // 按钮范围定义
+    typedef struct {
+        int x;
+        int y;
+    } coordinate;
+    typedef struct {
+        coordinate lu;
+        coordinate rd;
+    } Button;
+    Button select_level = {{200, 400}, {370, 450}};
+    Button exit_game = {{430, 400}, {600, 450}};
+    // 键盘输入定义
+    enum BUTTON { LEFT = 65, RIGHT = 68, SPACE = 32, ENTER = 13, ESC = 27 };
+    int flag = LEFT;
+    // 鼠标输入定义
+    ExMessage msg;
+    // 窗口设置
+    initgraph(800, 600, EX_DBLCLKS);
+    // 反复读取用户输入并作出相应的处理
     while (true) {
         BeginBatchDraw();
+        // 设置背景色并用背景色清屏
         setbkcolor(WHITE);
         cleardevice();
+        // 放置图片
         putimage(0, 0, &GameWin);
+        // 设置所有文字的透明效果
+        setbkmode(TRANSPARENT);
+        // 设置胜利信息的颜色，大小，字体，位置，内容
         settextcolor(WHITE);
         settextstyle(60, 0, "黑体");
-        setbkmode(TRANSPARENT);
         outtextxy(90, 310, str);
-        settextcolor(BLACK);
-        settextstyle(30, 0, "黑体");
-        setbkmode(TRANSPARENT);
+        // 根据用户输入改变按钮的状态
         if (flag == LEFT) {
-            setfillcolor(WHITE);
-            fillrectangle(200, 400, 370, 450);
-            setfillcolor(LIGHTGRAY);
-            solidrectangle(430, 400, 600, 450);
+            setfillcolor(WHITE);  // 左边变白
+            solidrectangle(select_level.lu.x, select_level.lu.y, select_level.rd.x, select_level.rd.y);
+            setfillcolor(LIGHTGRAY);  // 右边变灰
+            solidrectangle(exit_game.lu.x, exit_game.lu.y, exit_game.rd.x, exit_game.rd.y);
         } else if (flag == RIGHT) {
-            setfillcolor(LIGHTGRAY);
-            solidrectangle(200, 400, 370, 450);
-            setfillcolor(WHITE);
-            fillrectangle(430, 400, 600, 450);
+            setfillcolor(LIGHTGRAY);  // 左边变灰
+            solidrectangle(select_level.lu.x, select_level.lu.y, select_level.rd.x, select_level.rd.y);
+            setfillcolor(WHITE);  // 右边变白
+            solidrectangle(exit_game.lu.x, exit_game.lu.y, exit_game.rd.x, exit_game.rd.y);
         }
-        outtextxy(205, 410, "SELECT_LEVEL");
-        outtextxy(460, 410, "TO_HOME");
+        // 设置按钮信息的颜色，大小，字体，位置，内容
+        settextcolor(BLACK);
+        settextstyle(25, 0, "黑体");  // 大小和位置要根据字体和按钮的大小调整
+        outtextxy(205, 412, "SELECT_LEVEL");
+        outtextxy(470, 412, "TO_HOME");
         EndBatchDraw();
-        if (GetAsyncKeyState(LEFT)) {  // 更改选项
+        // 键盘输入处理
+        if (GetAsyncKeyState(LEFT)) {
             flag = LEFT;
         } else if (GetAsyncKeyState(RIGHT)) {
             flag = RIGHT;
-        } else if (GetAsyncKeyState(SPACE)) {
+        } else if (GetAsyncKeyState(SPACE) || GetAsyncKeyState(ENTER)) {
             switch (flag) {
                 case LEFT:
-                    LevelSelect();  // 进入选择关卡界面
+                    LevelSelect();
                     break;
                 case RIGHT:
-                    MainMenu();  // 返回主界面
+                    MainMenu();
                     break;
             }
+            Sleep(300);
         } else if (GetAsyncKeyState(ESC)) {
             exit(0);
+        }
+        // 鼠标输入处理
+        if (peekmessage(&msg, PM_REMOVE)) {
+            switch (msg.message) {
+                case WM_LBUTTONDOWN:  // 鼠标左键按下
+                    if (msg.x >= select_level.lu.x && msg.x <= select_level.rd.x && msg.y >= select_level.lu.y &&
+                        msg.y <= select_level.rd.y) {
+                        flag = LEFT;
+                    } else if (msg.x >= exit_game.lu.x && msg.x <= exit_game.rd.x && msg.y >= exit_game.lu.y &&
+                               msg.y <= exit_game.rd.y) {
+                        flag = RIGHT;
+                    }
+                    break;
+                case WM_LBUTTONDBLCLK:  // 双击鼠标左键
+                    if (msg.x >= select_level.lu.x && msg.x <= select_level.rd.x && msg.y >= select_level.lu.y &&
+                        msg.y <= select_level.rd.y) {
+                        LevelSelect();
+                    } else if (msg.x >= exit_game.lu.x && msg.x <= exit_game.rd.x && msg.y >= exit_game.lu.y &&
+                               msg.y <= exit_game.rd.y) {
+                        MainMenu();
+                    }
+                    break;
+            }
         }
     }
 }
 
 void GameLose() {
-    // 准备绘图
-    IMAGE GameOver;                                               // 定义一个图片变量
-    loadimage(&GameOver, "./interface\\GameOver.jpg");            // 加载图片
-    initgraph(800, 600);                                          // 初始化绘图窗口
-    enum Button { LEFT = 65, RIGHT = 68, SPACE = 32, ESC = 27 };  // 定义按键枚举类型
-    int flag = LEFT;                                              // 记录选择的按钮
+    IMAGE GameLose;
+    loadimage(&GameLose, "./interface\\GameOver.jpg");
+    typedef struct {
+        int x;
+        int y;
+    } coordinate;
+    typedef struct {
+        coordinate lu;
+        coordinate rd;
+    } Button;
+    Button select_level = {{200, 400}, {370, 450}};
+    Button exit_game = {{430, 400}, {600, 450}};
+    enum BUTTON { LEFT = 65, RIGHT = 68, SPACE = 32, ENTER = 13, ESC = 27 };
+    int flag = LEFT;
+    ExMessage msg;
+    initgraph(800, 600, EX_DBLCLKS);
     while (true) {
-        // 设置背景
-        BeginBatchDraw();           // 开始批量绘图
-        setbkcolor(WHITE);          // 设置背景色为白色
-        cleardevice();              // 清空绘图窗口
-        putimage(0, 0, &GameOver);  // 将图片绘制到绘图窗口
-        // 打印失败信息
+        BeginBatchDraw();
+        setbkcolor(WHITE);
+        cleardevice();
+        putimage(0, 0, &GameLose);
+        setbkmode(TRANSPARENT);
         settextcolor(RED);
         settextstyle(60, 0, "黑体");
-        setbkmode(TRANSPARENT);
-        outtextxy(280, 310, "YOU LOSE!");
-        // 画重新选关的按钮
-        setfillcolor(RED);                    // 设置填充颜色为红色
-        setlinecolor(RED);                    // 设置边框颜色为红色
-        fillrectangle(200, 400, 370, 450);    // 画一个填充的矩形
-        settextcolor(WHITE);                  // 设置字体颜色为白色
-        settextstyle(30, 0, "黑体");          // 设置字体大小为30，字体为黑体
-        outtextxy(205, 410, "SELECT_LEVEL");  // 在指定位置输出文字
-        // 画退出游戏的按钮
-        setfillcolor(RED);  // 同上
-        setlinecolor(RED);
-        fillrectangle(430, 400, 600, 450);
+        outtextxy(280, 310, "You lose!");
+        setfillcolor(RED);
+        setlinecolor(WHITE);
+        if (flag == LEFT) {
+            fillrectangle(select_level.lu.x, select_level.lu.y, select_level.rd.x, select_level.rd.y);
+            solidrectangle(exit_game.lu.x, exit_game.lu.y, exit_game.rd.x, exit_game.rd.y);
+        } else if (flag == RIGHT) {
+            solidrectangle(select_level.lu.x, select_level.lu.y, select_level.rd.x, select_level.rd.y);
+            fillrectangle(exit_game.lu.x, exit_game.lu.y, exit_game.rd.x, exit_game.rd.y);
+        }
         settextcolor(WHITE);
-        settextstyle(30, 0, "黑体");
-        outtextxy(460, 410, "TO_HOME");
-        // 选择按钮显示白色边框效果
-        if (GetAsyncKeyState(LEFT)) {       // A键
-            setlinecolor(WHITE);            // 设置边框颜色为白色
-            rectangle(200, 400, 370, 450);  // 画一个默认的无边框矩形
+        settextstyle(25, 0, "黑体");
+        outtextxy(205, 412, "SELECT_LEVEL");
+        outtextxy(470, 412, "TO_HOME");
+        EndBatchDraw();
+        if (GetAsyncKeyState(LEFT)) {
             flag = LEFT;
-        } else if (GetAsyncKeyState(RIGHT)) {  // D键
-            setlinecolor(WHITE);
-            rectangle(430, 400, 600, 450);
+        } else if (GetAsyncKeyState(RIGHT)) {
             flag = RIGHT;
+        } else if (GetAsyncKeyState(SPACE) || GetAsyncKeyState(ENTER)) {
+            switch (flag) {
+                case LEFT:
+                    LevelSelect();
+                    break;
+                case RIGHT:
+                    MainMenu();
+                    break;
+            }
+            Sleep(300);
         } else if (GetAsyncKeyState(ESC)) {
             exit(0);
-        } else {
-            switch (flag) {
-                case LEFT:
-                    setlinecolor(WHITE);
-                    rectangle(200, 400, 370, 450);
+        }
+        if (peekmessage(&msg, PM_REMOVE)) {
+            switch (msg.message) {
+                case WM_LBUTTONDOWN:
+                    if (msg.x >= select_level.lu.x && msg.x <= select_level.rd.x && msg.y >= select_level.lu.y &&
+                        msg.y <= select_level.rd.y) {
+                        flag = LEFT;
+                    } else if (msg.x >= exit_game.lu.x && msg.x <= exit_game.rd.x && msg.y >= exit_game.lu.y &&
+                               msg.y <= exit_game.rd.y) {
+                        flag = RIGHT;
+                    }
                     break;
-                case RIGHT:
-                    setlinecolor(WHITE);
-                    rectangle(430, 400, 600, 450);
+                case WM_LBUTTONDBLCLK:
+                    if (msg.x >= select_level.lu.x && msg.x <= select_level.rd.x && msg.y >= select_level.lu.y &&
+                        msg.y <= select_level.rd.y) {
+                        LevelSelect();
+                    } else if (msg.x >= exit_game.lu.x && msg.x <= exit_game.rd.x && msg.y >= exit_game.lu.y &&
+                               msg.y <= exit_game.rd.y) {
+                        MainMenu();
+                    }
                     break;
             }
         }
-        if (GetAsyncKeyState(SPACE)) {  // 按下空格键进入其他界面
-            switch (flag) {
-                case LEFT:
-                    LevelSelect();  // 进入选择关卡界面
-                    break;
-                case RIGHT:
-                    MainMenu();  // 返回主界面
-                    break;
-            }
-        }
-        EndBatchDraw();  // 结束批量绘图
     }
 }
