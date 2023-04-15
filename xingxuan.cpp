@@ -6,37 +6,37 @@
 void SaveData(const int level, const list<Enemy>& enemy_list, const list<Bullet>& bullet_list, const Player& player, const Position& base_position, const vector<vector<int>>& map, const time_t& play_time)
 {
 	ofstream outFile("Data.txt");
-	//±£´æ¹Ø¿¨µÄÊı¾İ
+	//ä¿å­˜å…³å¡çš„æ•°æ®
 	outFile << level << endl;
-	//±£´æµĞ·½Ì¹¿ËÁ´±íµÄÊı¾İ
-	//Ì¹¿ËµÄµÄÊı¾İ°´ÕÕÀàµÄ³ÉÔ±ÒÀ´Î½øĞĞ±£´æ£¬Ã¿¸öÌ¹¿Ë±£´æÎªÒ»ĞĞ
+	//ä¿å­˜æ•Œæ–¹å¦å…‹é“¾è¡¨çš„æ•°æ®
+	//å¦å…‹çš„çš„æ•°æ®æŒ‰ç…§ç±»çš„æˆå‘˜ä¾æ¬¡è¿›è¡Œä¿å­˜ï¼Œæ¯ä¸ªå¦å…‹ä¿å­˜ä¸ºä¸€è¡Œ
 	for (auto iter = enemy_list.begin(); iter != enemy_list.end(); ++iter) {
 		outFile << iter->cur_position_.x_ << " " << iter->cur_position_.y_ << " " << static_cast<int>(iter->direction_) << " " << iter->hp_ << " " << iter->fire_delay_ << " " << iter->target_ << endl;
-	}//static_cast<int>(iter->direction_ ):°ÑÃ¶¾ÙÖµ×ª»¯Îª¶ÔÓ¦µÄÕûÊıÖµ±£´æµ½ÎÄ¼şÀï
-	outFile << 1000 << endl;//100ÓÃÓÚ±íÊ¾µĞ·½Ì¹¿ËÁ´±íµÄÊı¾İÒÑ¾­±£´æÍê±Ï
+	}//static_cast<int>(iter->direction_ ):æŠŠæšä¸¾å€¼è½¬åŒ–ä¸ºå¯¹åº”çš„æ•´æ•°å€¼ä¿å­˜åˆ°æ–‡ä»¶é‡Œ
+	outFile << 1000 << endl;//1000ç”¨äºè¡¨ç¤ºæ•Œæ–¹å¦å…‹é“¾è¡¨çš„æ•°æ®å·²ç»ä¿å­˜å®Œæ¯•
 
-	//±£´æ×Óµ¯Á´±íµÄÊı¾İ
+	//ä¿å­˜å­å¼¹é“¾è¡¨çš„æ•°æ®
 	for (auto iter = bullet_list.begin(); iter != bullet_list.end(); ++iter) {
 		outFile << iter->cur_position_.x_ << " " << iter->cur_position_.y_ << " " << static_cast<int>(iter->direction_) << " " << iter->friendly_ << endl;
 	}
-	outFile << 1000 << endl;//100ÓÃÓÚ±íÊ¾×Óµ¯Á´±íµÄÊı¾İÒÑ¾­±£´æÍê±Ï
+	outFile << 1000 << endl;//1000ç”¨äºè¡¨ç¤ºå­å¼¹é“¾è¡¨çš„æ•°æ®å·²ç»ä¿å­˜å®Œæ¯•
 
-	//±£´æÍæ¼ÒÌ¹¿ËµÄÊı¾İ
+	//ä¿å­˜ç©å®¶å¦å…‹çš„æ•°æ®
 	outFile << player.cur_position_.x_ << " " << player.cur_position_.y_ << " " << static_cast<int>(player.direction_) << " " << player.hp_ << " " << player.fire_delay_ << endl;
-	//±£´æ»ùµØÎ»ÖÃµÄÊı¾İ
+	//ä¿å­˜åŸºåœ°ä½ç½®çš„æ•°æ®
 	outFile << base_position.x_ << " " << base_position.y_ << endl;
-	//±£´æµØÍ¼Êı¾İ
+	//ä¿å­˜åœ°å›¾æ•°æ®
 	for (int i = 0; i < map.size(); ++i) {
 		for (int j = 0; j < map[0].size(); ++j) {
 			outFile << map[i][j] << " ";
 		}
 		outFile << endl;
 	}
-	//±£´æÓÎÏ·Ê±¼äÊı¾İ
+	//ä¿å­˜æ¸¸æˆæ—¶é—´æ•°æ®
 	outFile << play_time << endl;
 	outFile << endl;
 
-	outFile.close();//¹Ø±ÕÎÄ¼ş
+	outFile.close();//å…³é—­æ–‡ä»¶
 
 }
 
@@ -44,70 +44,70 @@ bool ReadData(int& level, list<Enemy>& enemy_list, list<Bullet>& bullet_list, Pl
 {
 	ifstream inFile("Data.txt");
 	if (!inFile.is_open()) {
-		cout << "´ò¿ªÎÄ¼şÊ§°Ü" << endl;
+		cout << "æ‰“å¼€æ–‡ä»¶å¤±è´¥" << endl;
 		return false;
 	}
-	int judge;//×÷ÎªÅĞ¶¨±êÖ¾£¬ÅĞ¶ÏÁ´±íÀàÊı¾İÊÇ·ñÒÑ¾­½áÊø
-	//¶ÁÈ¡¹Ø¿¨Êı¾İ
+	int judge;//ä½œä¸ºåˆ¤å®šæ ‡å¿—ï¼Œåˆ¤æ–­é“¾è¡¨ç±»æ•°æ®æ˜¯å¦å·²ç»ç»“æŸ
+	//è¯»å–å…³å¡æ•°æ®
 	inFile >> level;
-	if (level == 0)//¹Ø¿¨ÖµÎª0£¬±íÊ¾ÓÎÏ·ÒÑ½áÊø£¬ÒÑ·µ»ØÖ÷½çÃæ
+	if (level == 0)//å…³å¡å€¼ä¸º0ï¼Œè¡¨ç¤ºæ¸¸æˆå·²ç»“æŸï¼Œå·²è¿”å›ä¸»ç•Œé¢
 		return false;
-	//¶ÁÈ¡µĞ·½Ì¹¿ËÁ´±íµÄÊı¾İ
+	//è¯»å–æ•Œæ–¹å¦å…‹é“¾è¡¨çš„æ•°æ®
 	while (1)
 	{
 		Position cur_position;
 		inFile >> cur_position.x_;
-		//ÅĞ¶ÏµĞ·½Ì¹¿ËµÄÊı¾İÊÇ·ñÒÑ¾­½áÊø£¬Èç¹ûÊÇ£¬ÔòÌø³öÑ­»·£¬½øĞĞÏÂÒ»ÀàÊı¾İµÄ¶ÁÈ¡
+		//åˆ¤æ–­æ•Œæ–¹å¦å…‹çš„æ•°æ®æ˜¯å¦å·²ç»ç»“æŸï¼Œå¦‚æœæ˜¯ï¼Œåˆ™è·³å‡ºå¾ªç¯ï¼Œè¿›è¡Œä¸‹ä¸€ç±»æ•°æ®çš„è¯»å–
 		if (cur_position.x_ == 1000)
 			continue;
 		inFile >> cur_position.y_;
-		int dir;//ÓÉÓÚÃ¶¾ÙÖµ±£´æÔÚÎÄ¼şÖĞ×ª»»³ÉÁËÏàÓ¦µÄÕûÊıÖµ£¬ÓÃdir_¶ÁÈ¡¶ÔÓ¦µÄÕûÊı
+		int dir;//ç”±äºæšä¸¾å€¼ä¿å­˜åœ¨æ–‡ä»¶ä¸­è½¬æ¢æˆäº†ç›¸åº”çš„æ•´æ•°å€¼ï¼Œç”¨dir_è¯»å–å¯¹åº”çš„æ•´æ•°
 		int hp;
 		int fire_delay;
 		bool target;
 		inFile >> dir >> hp >> fire_delay >> target;
-		DIR direction = static_cast<DIR>(dir);//static_cast<DIR>½«dir_Ç¿ÖÆ×ª»¯³É¶ÔÓ¦µÄÃ¶¾ÙÖµ
-		Enemy enemy(enemy_list, cur_position, direction);//³õÊ¼»¯µĞ·½Ì¹¿Ë
+		DIR direction = static_cast<DIR>(dir);//static_cast<DIR>å°†dir_å¼ºåˆ¶è½¬åŒ–æˆå¯¹åº”çš„æšä¸¾å€¼
+		Enemy enemy(enemy_list, cur_position, direction);//åˆå§‹åŒ–æ•Œæ–¹å¦å…‹
 
-		//ĞŞ¸ÄÌ¹¿ËÊı¾İ£¬Ê¹ÆäÓë´æµµÊı¾İÒ»ÖÂ¡£hp_¡¢fire_delay_¡¢target_ÈıÏîÊı¾İÈÔĞèĞŞ¸Ä
+		//ä¿®æ”¹å¦å…‹æ•°æ®ï¼Œä½¿å…¶ä¸å­˜æ¡£æ•°æ®ä¸€è‡´ã€‚hp_ã€fire_delay_ã€target_ä¸‰é¡¹æ•°æ®ä»éœ€ä¿®æ”¹
 		auto temp = enemy_list.back();
 		temp.hp_ = hp;
 		temp.fire_delay_ = fire_delay;
 		temp.target_ = target;
-		enemy_list.pop_back();//É¾³ı³õÊ¼»¯µÄÌ¹¿Ë
-		enemy_list.push_back(temp);//Ìí¼ÓĞŞ¸ÄºóµÄÌ¹¿Ë
+		enemy_list.pop_back();//åˆ é™¤åˆå§‹åŒ–çš„å¦å…‹
+		enemy_list.push_back(temp);//æ·»åŠ ä¿®æ”¹åçš„å¦å…‹
 
 	}
-	//¶ÁÈ¡×Óµ¯Á´±íµÄÊı¾İ
+	//è¯»å–å­å¼¹é“¾è¡¨çš„æ•°æ®
 	while (1)
 	{
 		Position cur_position;
 		inFile >> cur_position.x_;
-		//ÅĞ¶Ï×Óµ¯µÄÊı¾İÊÇ·ñÒÑ¾­½áÊø£¬Èç¹ûÊÇ£¬ÔòÌø³öÑ­»·£¬½øĞĞÏÂÒ»ÀàÊı¾İµÄ¶ÁÈ¡
+		//åˆ¤æ–­å­å¼¹çš„æ•°æ®æ˜¯å¦å·²ç»ç»“æŸï¼Œå¦‚æœæ˜¯ï¼Œåˆ™è·³å‡ºå¾ªç¯ï¼Œè¿›è¡Œä¸‹ä¸€ç±»æ•°æ®çš„è¯»å–
 		if (cur_position.x_ == 1000)
 			continue;
 		int dir;
 		bool friendly;
 		inFile >> cur_position.y_ >> dir >> friendly;
 		DIR direction = static_cast<DIR>(dir);
-		Bullet bullet(bullet_list, cur_position, direction, friendly);//³õÊ¼»¯×Óµ¯
+		Bullet bullet(bullet_list, cur_position, direction, friendly);//åˆå§‹åŒ–å­å¼¹
 	}
-	//¶ÁÈ¡Íæ¼ÒÊı¾İ
+	//è¯»å–ç©å®¶æ•°æ®
 	int dir;
 	inFile >> player.cur_position_.x_ >> player.cur_position_.y_ >> dir >> player.hp_ >> player.fire_delay_;
 	player.direction_ = static_cast<DIR>(dir);
-	//¶ÁÈ¡»ùµØÎ»ÖÃ
+	//è¯»å–åŸºåœ°ä½ç½®
 	inFile >> base_position.x_ >> base_position.y_;
-	//¶ÁÈ¡µØÍ¼
+	//è¯»å–åœ°å›¾
 	for (int i = 0; i < map.size(); ++i) {
 		for (int j = 0; j < map[0].size(); ++j) {
 			inFile >> map[i][j];
 		}
 	}
-	//¶ÁÈ¡ÓÎÏ·Ê±¼ä
+	//è¯»å–æ¸¸æˆæ—¶é—´
 	inFile >> play_time;
 
-	inFile.close();//¹Ø±ÕÎÄ¼ş
+	inFile.close();//å…³é—­æ–‡ä»¶
 
 	return true;
 }
@@ -117,33 +117,33 @@ int LevelSelect()
 	setbkcolor(BLACK);
 	cleardevice();
 	setfillcolor(WHITE);
-	BeginBatchDraw();//¿ªÊ¼ÅúÁ¿»æÍ¼
+	BeginBatchDraw();//å¼€å§‹æ‰¹é‡ç»˜å›¾
 	fillrectangle(40, 150, 190, 450);
 	fillrectangle(230, 150, 380, 450);
 	fillrectangle(420, 150, 570, 450);
 	fillrectangle(610, 150, 760, 450);
 	settextcolor(BLACK);
-	settextstyle(20, 0, "¿¬Ìå");
+	settextstyle(20, 0, "æ¥·ä½“");
 	setbkmode(TRANSPARENT);
 
-	//ÎÄ×Ö¾ÓÖĞ±íÊ¾
-	char arr1[] = "·µ»Ø²Ëµ¥½çÃæ";
+	//æ–‡å­—å±…ä¸­è¡¨ç¤º
+	char arr1[] = "è¿”å›èœå•ç•Œé¢";
 	int width1 = 150 / 2 - textwidth(arr1) / 2;
 	int height1 = 300 / 2 - textheight(arr1) / 2;
 	outtextxy(40 + width1, 150 + height1, arr1);
-	char arr2[] = "·ÏĞæÂ¥";
+	char arr2[] = "åºŸå¢Ÿæ¥¼";
 	int width2 = 150 / 2 - textwidth(arr2) / 2;
 	int height2 = 300 / 2 - textheight(arr2) / 2;
 	outtextxy(230 + width2, 150 + height2, arr2);
-	char arr3[] = "´ÔÁÖ";
+	char arr3[] = "ä¸›æ—";
 	int width3 = 150 / 2 - textwidth(arr3) / 2;
 	int height3 = 300 / 2 - textheight(arr3) / 2;
 	outtextxy(420 + width3, 150 + height3, arr3);
-	char arr4[] = "¾üÊÂ»ùµØ";
+	char arr4[] = "å†›äº‹åŸºåœ°";
 	int width4 = 150 / 2 - textwidth(arr4) / 2;
 	int height4 = 300 / 2 - textheight(arr4) / 2;
 	outtextxy(610 + width4, 150 + height4, arr4);
-	FlushBatchDraw();//½áÊøÅúÁ¿»æÍ¼
+	FlushBatchDraw();//ç»“æŸæ‰¹é‡ç»˜å›¾
 
 	ExMessage m;
 	while (1)
