@@ -9,7 +9,7 @@ void ShowMap(const int& level,
              const Position& base_position,
              const vector<vector<int>>& map,
              const time_t& play_time) {
-    const int LENGTH = 30;  // µØÍ¼¿é±ß³¤
+    const int LENGTH = 30;  // åœ°å›¾å—è¾¹é•¿
     IMAGE base;
     IMAGE wall;
     IMAGE grass;
@@ -40,7 +40,7 @@ void ShowMap(const int& level,
     BeginBatchDraw();
     setbkcolor(BLACK);
     cleardevice();
-    // »­³öµØÍ¼
+    // ç”»å‡ºåœ°å›¾
     for (int i = 0; i < map.size(); i++) {
         for (int j = 0; j < map[i].size(); j++) {
             if (map[i][j] == WALL) {
@@ -50,7 +50,7 @@ void ShowMap(const int& level,
             }
         }
     }
-    // »­³öÍæ¼ÒµÄÌ¹¿Ë
+    // ç”»å‡ºç©å®¶çš„å¦å…‹
     switch (player.direction_) {
         case UP:
             putimage(player.cur_position_.x_ * LENGTH, player.cur_position_.y_ * LENGTH, &MyTankU);
@@ -65,7 +65,7 @@ void ShowMap(const int& level,
             putimage(player.cur_position_.x_ * LENGTH, player.cur_position_.y_ * LENGTH, &MyTankR);
             break;
     }
-    // »­³öµĞÈËµÄÌ¹¿Ë
+    // ç”»å‡ºæ•Œäººçš„å¦å…‹
     for (auto enemy : enemy_list) {
         switch (enemy.direction_) {
             case UP:
@@ -82,15 +82,15 @@ void ShowMap(const int& level,
                 break;
         }
     }
-    // »­³ö×Óµ¯
+    // ç”»å‡ºå­å¼¹
     for (auto bullet : bullet_list) {
         putimage(bullet.cur_position_.x_, bullet.cur_position_.y_, &Bullet);
     }
-    // »­³ö»ùµØ
+    // ç”»å‡ºåŸºåœ°
     putimage(base_position.x_ * LENGTH, base_position.y_ * LENGTH, &camp);
-    // ÓÒ²àµĞÎÒĞÅÏ¢
+    // å³ä¾§æ•Œæˆ‘ä¿¡æ¯
     settextcolor(BLACK);
-    settextstyle(20, 0, "ºÚÌå");
+    settextstyle(20, 0, "é»‘ä½“");
     char str[100];
     sprintf(str, "Level: %d", level);
     outtextxy(600, 50, str);
@@ -105,13 +105,13 @@ void ShowMap(const int& level,
 }
 
 void GameWin(const time_t& play_time) {
-    // Í¼Æ¬ÉùÃ÷²¢¼ÓÔØ
+    // å›¾ç‰‡å£°æ˜å¹¶åŠ è½½
     IMAGE GameWin;
     loadimage(&GameWin, "./interface\\GameOver.jpg");
-    // ¸ù¾İÓÎÏ·ÓÃÊ±Éú³ÉÊ¤ÀûĞÅÏ¢
+    // æ ¹æ®æ¸¸æˆç”¨æ—¶ç”Ÿæˆèƒœåˆ©ä¿¡æ¯
     char str[100];
     sprintf(str, "You win in %d seconds!", play_time);
-    // °´Å¥·¶Î§¶¨Òå
+    // æŒ‰é’®èŒƒå›´å®šä¹‰
     typedef struct {
         int x;
         int y;
@@ -122,46 +122,46 @@ void GameWin(const time_t& play_time) {
     } Button;
     Button select_level = {{200, 400}, {370, 450}};
     Button exit_game = {{430, 400}, {600, 450}};
-    // ¼üÅÌÊäÈë¶¨Òå
+    // é”®ç›˜è¾“å…¥å®šä¹‰
     enum BUTTON { LEFT = 65, RIGHT = 68, SPACE = 32, ENTER = 13, ESC = 27 };
     int flag = LEFT;
-    // Êó±êÊäÈë¶¨Òå
+    // é¼ æ ‡è¾“å…¥å®šä¹‰
     ExMessage msg;
-    // ´°¿ÚÉèÖÃ
+    // çª—å£è®¾ç½®
     initgraph(800, 600, EX_DBLCLKS);
-    // ·´¸´¶ÁÈ¡ÓÃ»§ÊäÈë²¢×÷³öÏàÓ¦µÄ´¦Àí
+    // åå¤è¯»å–ç”¨æˆ·è¾“å…¥å¹¶ä½œå‡ºç›¸åº”çš„å¤„ç†
     while (true) {
         BeginBatchDraw();
-        // ÉèÖÃ±³¾°É«²¢ÓÃ±³¾°É«ÇåÆÁ
+        // è®¾ç½®èƒŒæ™¯è‰²å¹¶ç”¨èƒŒæ™¯è‰²æ¸…å±
         setbkcolor(WHITE);
         cleardevice();
-        // ·ÅÖÃÍ¼Æ¬
+        // æ”¾ç½®å›¾ç‰‡
         putimage(0, 0, &GameWin);
-        // ÉèÖÃËùÓĞÎÄ×ÖµÄÍ¸Ã÷Ğ§¹û
+        // è®¾ç½®æ‰€æœ‰æ–‡å­—çš„é€æ˜æ•ˆæœ
         setbkmode(TRANSPARENT);
-        // ÉèÖÃÊ¤ÀûĞÅÏ¢µÄÑÕÉ«£¬´óĞ¡£¬×ÖÌå£¬Î»ÖÃ£¬ÄÚÈİ
+        // è®¾ç½®èƒœåˆ©ä¿¡æ¯çš„é¢œè‰²ï¼Œå¤§å°ï¼Œå­—ä½“ï¼Œä½ç½®ï¼Œå†…å®¹
         settextcolor(WHITE);
-        settextstyle(60, 0, "ºÚÌå");
+        settextstyle(60, 0, "é»‘ä½“");
         outtextxy(90, 310, str);
-        // ¸ù¾İÓÃ»§ÊäÈë¸Ä±ä°´Å¥µÄ×´Ì¬
+        // æ ¹æ®ç”¨æˆ·è¾“å…¥æ”¹å˜æŒ‰é’®çš„çŠ¶æ€
         if (flag == LEFT) {
-            setfillcolor(WHITE);  // ×ó±ß±ä°×
+            setfillcolor(WHITE);  // å·¦è¾¹å˜ç™½
             solidrectangle(select_level.lu.x, select_level.lu.y, select_level.rd.x, select_level.rd.y);
-            setfillcolor(LIGHTGRAY);  // ÓÒ±ß±ä»Ò
+            setfillcolor(LIGHTGRAY);  // å³è¾¹å˜ç°
             solidrectangle(exit_game.lu.x, exit_game.lu.y, exit_game.rd.x, exit_game.rd.y);
         } else if (flag == RIGHT) {
-            setfillcolor(LIGHTGRAY);  // ×ó±ß±ä»Ò
+            setfillcolor(LIGHTGRAY);  // å·¦è¾¹å˜ç°
             solidrectangle(select_level.lu.x, select_level.lu.y, select_level.rd.x, select_level.rd.y);
-            setfillcolor(WHITE);  // ÓÒ±ß±ä°×
+            setfillcolor(WHITE);  // å³è¾¹å˜ç™½
             solidrectangle(exit_game.lu.x, exit_game.lu.y, exit_game.rd.x, exit_game.rd.y);
         }
-        // ÉèÖÃ°´Å¥ĞÅÏ¢µÄÑÕÉ«£¬´óĞ¡£¬×ÖÌå£¬Î»ÖÃ£¬ÄÚÈİ
+        // è®¾ç½®æŒ‰é’®ä¿¡æ¯çš„é¢œè‰²ï¼Œå¤§å°ï¼Œå­—ä½“ï¼Œä½ç½®ï¼Œå†…å®¹
         settextcolor(BLACK);
-        settextstyle(25, 0, "ºÚÌå");  // ´óĞ¡ºÍÎ»ÖÃÒª¸ù¾İ×ÖÌåºÍ°´Å¥µÄ´óĞ¡µ÷Õû
+        settextstyle(25, 0, "é»‘ä½“");  // å¤§å°å’Œä½ç½®è¦æ ¹æ®å­—ä½“å’ŒæŒ‰é’®çš„å¤§å°è°ƒæ•´
         outtextxy(205, 412, "SELECT_LEVEL");
         outtextxy(470, 412, "TO_HOME");
         EndBatchDraw();
-        // ¼üÅÌÊäÈë´¦Àí
+        // é”®ç›˜è¾“å…¥å¤„ç†
         if (GetAsyncKeyState(LEFT)) {
             flag = LEFT;
         } else if (GetAsyncKeyState(RIGHT)) {
@@ -179,10 +179,10 @@ void GameWin(const time_t& play_time) {
         } else if (GetAsyncKeyState(ESC)) {
             exit(0);
         }
-        // Êó±êÊäÈë´¦Àí
+        // é¼ æ ‡è¾“å…¥å¤„ç†
         if (peekmessage(&msg, PM_REMOVE)) {
             switch (msg.message) {
-                case WM_LBUTTONDOWN:  // Êó±ê×ó¼ü°´ÏÂ
+                case WM_LBUTTONDOWN:  // é¼ æ ‡å·¦é”®æŒ‰ä¸‹
                     if (msg.x >= select_level.lu.x && msg.x <= select_level.rd.x && msg.y >= select_level.lu.y &&
                         msg.y <= select_level.rd.y) {
                         flag = LEFT;
@@ -191,7 +191,7 @@ void GameWin(const time_t& play_time) {
                         flag = RIGHT;
                     }
                     break;
-                case WM_LBUTTONDBLCLK:  // Ë«»÷Êó±ê×ó¼ü
+                case WM_LBUTTONDBLCLK:  // åŒå‡»é¼ æ ‡å·¦é”®
                     if (msg.x >= select_level.lu.x && msg.x <= select_level.rd.x && msg.y >= select_level.lu.y &&
                         msg.y <= select_level.rd.y) {
                         LevelSelect();
@@ -229,7 +229,7 @@ void GameLose() {
         putimage(0, 0, &GameLose);
         setbkmode(TRANSPARENT);
         settextcolor(RED);
-        settextstyle(60, 0, "ºÚÌå");
+        settextstyle(60, 0, "é»‘ä½“");
         outtextxy(280, 310, "You lose!");
         setfillcolor(RED);
         setlinecolor(WHITE);
@@ -241,7 +241,7 @@ void GameLose() {
             fillrectangle(exit_game.lu.x, exit_game.lu.y, exit_game.rd.x, exit_game.rd.y);
         }
         settextcolor(WHITE);
-        settextstyle(25, 0, "ºÚÌå");
+        settextstyle(25, 0, "é»‘ä½“");
         outtextxy(205, 412, "SELECT_LEVEL");
         outtextxy(470, 412, "TO_HOME");
         EndBatchDraw();
