@@ -20,7 +20,7 @@ void NewGame(const int level,
 		Update(level, enemy_list, bullet_list, player, base_position, map, play_time);
 
 		//判断游戏是否结束
-		int jd = JudgeBullets(map, player, base_position, bullet_list, enemy_list);
+		int jd = JudgeBullets(map, player, base_position, bullet_list, enemy_list);//参数存在问题
 		if (jd == 2)
 		{
 			SaveData(level, enemy_list, bullet_list, player, base_position, map, play_time);
