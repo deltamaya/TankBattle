@@ -92,13 +92,13 @@ void ShowMap(const int& level,
     settextcolor(BLACK);
     settextstyle(20, 0, "黑体");
     char str[100];
-    sprintf(str, "Level: %d", level);
+    sprintf_s(str, "Level: %d", level);
     outtextxy(600, 50, str);
-    sprintf(str, "Enemy: %d", enemy_list.size());
+    sprintf_s(str, "Enemy: %d", enemy_list.size());
     outtextxy(600, 100, str);
-    sprintf(str, "Time: %d", play_time);
+    sprintf_s(str, "Time: %d", play_time);
     outtextxy(600, 200, str);
-    sprintf(str, "Life: %d", player.hp_);
+    sprintf_s(str, "Life: %d", player.hp_);
     outtextxy(600, 250, str);
     EndBatchDraw();
     closegraph();
@@ -110,7 +110,7 @@ void GameWin(const time_t& play_time) {
     loadimage(&GameWin, "./interface\\GameOver.jpg");
     // 根据游戏用时生成胜利信息
     char str[100];
-    sprintf(str, "You win in %d seconds!", play_time);
+    sprintf_s(str, "You win in %d seconds!", play_time);
     // 按钮范围定义
     typedef struct {
         int x;

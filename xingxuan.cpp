@@ -131,7 +131,7 @@ int LevelSelect()
 	int width1 = 150 / 2 - textwidth(arr1) / 2;
 	int height1 = 300 / 2 - textheight(arr1) / 2;
 	outtextxy(40 + width1, 150 + height1, arr1);
-	char arr2[] = "废墟楼";
+	char arr2[] = "废墟楼 ";
 	int width2 = 150 / 2 - textwidth(arr2) / 2;
 	int height2 = 300 / 2 - textheight(arr2) / 2;
 	outtextxy(230 + width2, 150 + height2, arr2);

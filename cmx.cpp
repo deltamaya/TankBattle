@@ -58,7 +58,8 @@ void NewGame(const int level,
 					if (msg.message == WM_LBUTTONDOWN && msg.x > 175 && msg.x < 325 && msg.y > 125 && msg.y < 125 + 100)
 					{
 						//´ò¿ªÉèÖÃ
-						Settings();
+						extern int music_volume, sound_volume;//´¿´¿²âÊÔ
+						Settings(music_volume, sound_volume);
 						break;
 
 					}
