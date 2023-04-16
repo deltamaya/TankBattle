@@ -1,5 +1,6 @@
 #include <graphics.h>
 #include <conio.h>
+#include <windows.h>
 //负责人：王大
 //功能：展示开发者成员界面，可以返回主界面
 //参数：void
@@ -37,3 +38,30 @@ void Developers() {
     // 等待用户输入以返回主菜单
     _getch();
 }
+
+
+
+ bool ContinueGame() {
+     int result = MessageBox(GetHWnd(), "你有未完成的游戏，是否继续？", "提示", MB_YESNO);
+     if (result == IDYES) {
+         return true;
+     }
+     else {
+         return false;
+     }
+ }
+
+#if
+int main() {
+    initgraph(640, 480);
+        if (ContinueGame()) {
+            outtextxy(100, 200, "继续游戏");
+        }
+        else {
+            outtextxy(100, 200, "退出游戏");
+        }
+    _getch();
+    closegraph();
+    return 0;
+}
+#endif // 0
