@@ -5,7 +5,6 @@
 #pragma comment(lib, "winmm.lib")
 
 namespace ui {
-
 class music {
    private:
     char* path_;  // 音乐路径
@@ -61,20 +60,23 @@ class button {
     ExMessage msg;  // 消息
 
    public:
-   // 接收坐标，宽高，文字，颜色，是否实心，实心颜色，打印按钮，空心按钮边框与文字颜色一致
+   // 接收坐标，宽高，文字，颜色，是否实心，实心颜色, 画按钮
+   // 四个参数打印白色空心按钮，六个参数可以打印按钮中的文字，八个参数可以打印实心按钮
     button(int x, int y, int w, int h, char* text = NULL, int color = WHITE, bool solid = 0,int full_color = RED)  // 文字颜色样式
         : x_(x), y_(y), w_(w), h_(h), text_(text), color_(color), solid_(solid) ,full_color_(full_color) {
         if (solid_) {
             setfillcolor(full_color_);                     // 填充颜色
+            setlinecolor(color_);                 // 线条颜色
             fillrectangle(x_, y_, x_ + w_, y_ + h_);  // 填充矩形
         } else {
             setlinecolor(color_);                 // 线条颜色
             rectangle(x_, y_, x_ + w_, y_ + h_);  // 画矩形
         }
         if (text_) {
+            setbkmode(TRANSPARENT);
             settextcolor(color_);                                  // 文字颜色
             settextstyle(20, 0, "黑体");                           // 文字样式
-            outtextxy(x_ + w_ / 2 - 10, y_ + h_ / 2 - 10, text_);  // 输出文字
+            outtextxy(x_ + w_ / 2 - textwidth(text_) / 2 , y_ + h_ / 2 - textheight(text_) / 2, text_);  // 输出文字
         }
     }
     // 检测鼠标是否点击了按钮
@@ -89,5 +91,4 @@ class button {
         return false;
     }
 };
-
 }
