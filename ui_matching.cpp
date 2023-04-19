@@ -18,6 +18,38 @@ class click {
 int click::flag_music_ = 1;
 click click_;
 
+class GameBegin {
+   public:
+    static int flag_music_1;
+    music begin_;
+    GameBegin() : begin_("GameBegin.mp3", 1000){};
+    void play() {
+        begin_.play();
+        begin_.close();
+        if (click::flag_music_) {
+            begin_.play();
+        }
+    }
+};
+int GameBegin::flag_music_1 = 1;
+GameBegin begin_;
+
+class GameEnd {
+   public:
+    static int flag_music_2;
+    music end_;
+    GameEnd() : end_("GameOver.mp3", 1000){};
+    void play() {
+        end_.play();
+        end_.close();
+        if (click::flag_music_) {
+            end_.play();
+        }
+    }
+};
+int GameEnd::flag_music_2 = 1;
+GameEnd end_;
+
 int MainMenu() {
     while(true){
         menu.begin();
@@ -64,14 +96,17 @@ int LevelSelect() {
         return 0;
     case Ruins:
         click_.play();
+        begin_.play();
         cout << "Ruins" << endl;
         return 1;
     case Jungle:
         click_.play();
+        begin_.play();
         cout << "Jungle" << endl;
         return 2;
     case MilitaryBase:
         click_.play();
+        begin_.play();
         cout << "MilitaryBase" << endl;
         return 3;
     }
@@ -91,9 +126,13 @@ void Settings() {
         case AddVolume:
             click_.play();
             click::flag_music_ = 1;
+            GameBegin::flag_music_1 = 1;
+            GameEnd::flag_music_2 = 1;
             break;
         case ReduceVolume:
             click::flag_music_ = 0;
+            GameBegin::flag_music_1 = 0;
+            GameEnd::flag_music_2 = 0;
             break;
         }
     }
@@ -129,6 +168,7 @@ void Help() {
 
 void GameWin() {
     std::string time_str = "YOU WON!!!!";
+    end_.play();
     while (true) {
         win.begin();
         win.clear();
@@ -137,7 +177,7 @@ void GameWin() {
         setbkmode(TRANSPARENT);
         settextcolor(WHITE);
         settextstyle(60, 0, "黑体");
-        outtextxy(170, 310, time_str.c_str());
+        outtextxy(270, 310, time_str.c_str());
         win.end();
         switch (win.CheckButton()) {
         case 0:
@@ -152,6 +192,7 @@ void GameWin() {
 
 void GameLose() {
     std::string lose_str = "You lose!";
+    end_.play();
     while (true) {
         lose.begin();
         lose.clear();
