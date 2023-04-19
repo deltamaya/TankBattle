@@ -167,7 +167,7 @@ void Help() {
 }
 
 void GameWin() {
-    std::string time_str = "YOU WON!!!!";
+    std::string time_str = "YOU WON!!!";
     end_.play();
     while (true) {
         win.begin();
