@@ -124,7 +124,7 @@ void Settings() {
             click_.play();
             return;
         case AddVolume:
-            click_.play();
+            click_click_.play();
             click::flag_music_ = 1;
             GameBegin::flag_music_1 = 1;
             GameEnd::flag_music_2 = 1;
