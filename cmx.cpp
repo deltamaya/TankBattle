@@ -134,9 +134,9 @@ void NewGame(const int level,
             show.PrintButton();
             settextcolor(WHITE);
             settextstyle(20, 0, "黑体");
-            outtextxy(600, 50, level_str.c_str());
-            outtextxy(600, 100, enemy_num_str.c_str());
-            outtextxy(600, 250, hp_str.c_str());
+            outtextxy(610, 50, level_str.c_str());
+            outtextxy(610, 100, enemy_num_str.c_str());
+            outtextxy(610, 250, hp_str.c_str());
             for (int i = 0; i < map.size(); i++) {
                 for (int j = 0; j < map[i].size(); j++) {
                     if (map[j][i] == WALL) {
