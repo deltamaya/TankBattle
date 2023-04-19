@@ -212,7 +212,7 @@ vector<vector<int>>map = {
 	{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 };
 extern ui TankBattle, menu, level, setting, developer, help, show, stop, win, lose;
-//ÒôÀÖÒôÁ¿£¬ÒôĞ§ÒôÁ¿
+//éŸ³ä¹éŸ³é‡ï¼ŒéŸ³æ•ˆéŸ³é‡
 int music_volume = 100, sound_volume = 100;
 int main() {
 	menu.AddImage("./interface\\MainInterface.jpg");
@@ -222,12 +222,12 @@ int main() {
 	menu.AddButton(340, 360, 120, 40, "Developer");
 	menu.AddButton(340, 400, 120, 40, "Exit");
 	level.AddButton(40, 150, 150, 300, "Return");
-	level.AddButton(230, 150, 150, 300, "Jungle");
-	level.AddButton(420, 150, 150, 300, "Ruin");
-	level.AddButton(610, 150, 150, 300, "MilitaryBase");
+	level.AddButton(230, 150, 150, 300, "Level_1");
+	level.AddButton(420, 150, 150, 300, "Level_2");
+	level.AddButton(610, 150, 150, 300, "Level_3");
 	setting.AddButton(40, 150, 150, 300, "Return");
-	setting.AddButton(230, 150, 150, 300, "AddVolume");
-	setting.AddButton(420, 150, 150, 300, "ReduceVolume");
+	setting.AddButton(230, 150, 150, 300, "OnSound");
+	setting.AddButton(420, 150, 150, 300, "OffSound");
 	developer.AddImage("./images\\developer.png");
 	developer.AddButton(0, 0, 800, 600);
 	help.AddImage("./images\\help.png");
@@ -244,22 +244,22 @@ int main() {
 	lose.AddButton(200, 400, 170, 50, "ToHome");
 	lose.AddButton(430, 400, 170, 50, "Exit");
 	initgraph(800, 600);
-	//°üº¬ÓÎÏ·ÖĞËùÓĞµĞ¶Ôµ¥Î»µÄÁ´±í
+	//åŒ…å«æ¸¸æˆä¸­æ‰€æœ‰æ•Œå¯¹å•ä½çš„é“¾è¡¨
 	list<Enemy>enemy_list;
-	//°üº¬ÓÎÏ·ÖĞËùÓĞ×Óµ¯µÄÁ´±í
+	//åŒ…å«æ¸¸æˆä¸­æ‰€æœ‰å­å¼¹çš„é“¾è¡¨
 	list<Bullet>bullet_list;
-	//Íæ¼Ò
+	//ç©å®¶
 	Player player({ 0,0 }, UP);
-	//»ùµØÎ»ÖÃ
+	//åŸºåœ°ä½ç½®
 	Position base_position;
-	//ÓÎÍæÊ±¼ä
+	//æ¸¸ç©æ—¶é—´
 	time_t play_time;
-	//Ö÷½çÃæµÄÍæ¼ÒÑ¡Ôñ
+	//ä¸»ç•Œé¢çš„ç©å®¶é€‰æ‹©
 	int choice;
-	//¹Ø¿¨
+	//å…³å¡
 	int level;
 	while (1) {
-		//ÊÇ·ñ´æÔÚÓĞĞ§´æµµ
+		//æ˜¯å¦å­˜åœ¨æœ‰æ•ˆå­˜æ¡£
 		setbkcolor(BLACK);
 		cleardevice();
 		//bool has_data = false;//ReadData(level, enemy_list, bullet_list, player, base_position, map, play_time);
