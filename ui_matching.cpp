@@ -2,8 +2,24 @@
 
 ui TankBattle, menu, level, setting, developer, help, show, stop, win, lose;
 
-int MainMenu() {  // ������
-    while(1){
+class click {
+   public:
+    static int flag_music_;
+    music click_;
+    click() : click_("click.wav", 1000){};
+    void play() {
+        click_.play();
+        click_.close();
+        if (flag_music_) {
+            click_.play();
+        }
+    }
+};
+int click::flag_music_ = 1;
+click click_;
+
+int MainMenu() {
+    while(true){
         menu.begin();
         menu.clear();
         menu.PrintImage();
@@ -12,20 +28,25 @@ int MainMenu() {  // ������
         enum { GameStart, Setting, Help, Developer, Exit };
         switch (menu.CheckButton()) {
         case GameStart:
+            click_.play();
             return 0;
         case Setting:
+            click_.play();
             return 1;
         case Help:
+            click_.play();
             return 2;
         case Developer:
+            click_.play();
             return 3;
         case Exit:
+            click_.play();
             return 4;
         }
     }
 }
 
-int LevelSelect() {  // ѡ��ؿ�
+int LevelSelect() {
     level.begin();
     level.clear();
     level.PrintButton();
@@ -38,21 +59,25 @@ int LevelSelect() {  // ѡ��ؿ�
     }
     switch (ret) {
     case Return:
+        click_.play();
         cout << "Return" << endl;
         return 0;
     case Ruins:
+        click_.play();
         cout << "Ruins" << endl;
         return 1;
     case Jungle:
+        click_.play();
         cout << "Jungle" << endl;
         return 2;
     case MilitaryBase:
+        click_.play();
         cout << "MilitaryBase" << endl;
         return 3;
     }
 }
 
-void Settings() {  // ����ԭ�ͣ�void Settings(int& music_volume,int& sound_volume);���ĸ�������ֻ����ʾ������
+void Settings() {
     while (true) {
         setting.begin();
         setting.clear();
@@ -61,130 +86,48 @@ void Settings() {  // ����ԭ�ͣ�void Settings(int& music_volume,int&
         enum { Return, AddVolume, ReduceVolume };
         switch (setting.CheckButton()) {
         case Return:
-            return;  // ������þͷ�������
+            click_.play();
+            return;
         case AddVolume:
-            // ��������
+            click_.play();
+            click::flag_music_ = 1;
             break;
         case ReduceVolume:
-            // ��С����
+            click::flag_music_ = 0;
             break;
         }
     }
 }
 
-void Developers() {  // ������
+void Developers() {
     while (true) {
         developer.begin();
         developer.clear();
         developer.PrintImage();
         developer.PrintButton();
         developer.end();
-        if (developer.CheckButton() == 0)
+        if (developer.CheckButton() == 0){
+            click_.play();
             return;
+        }
     }
 }
 
-void Help() {  // ����
+void Help() {
     while (true) {
         help.begin();
         help.clear();
         help.PrintImage();
         help.PrintButton();
         help.end();
-        if (help.CheckButton() == 0)
+        if (help.CheckButton() == 0){
+            click_.play();
             return;
+        }
     }
 }
 
-//void ShowGameUI() {                                           // ��ʾ��Ϸ����
-//    int level = 1, enemy_num = 1, play_time = 100, hp = 999;  // ������Ҫ�������Ĳ���������ֻ�ǲ���
-//    std::string level_str = "Level: " + std::to_string(level);
-//    std::string enemy_num_str = "Enemy: " + std::to_string(enemy_num);
-//    std::string play_time_str = "Time: " + std::to_string(play_time);
-//    std::string hp_str = "HP: " + std::to_string(hp);
-//    while (true) {
-//        show.begin();
-//        show.clear();
-//        // ������Ϸ����
-//
-//        // ������Ϸ�����
-//        show.PrintButton();
-//        settextcolor(WHITE);
-//        settextstyle(20, 0, "����");
-//        outtextxy(600, 50, level_str.c_str());
-//        outtextxy(600, 100, enemy_num_str.c_str());
-//        outtextxy(600, 200, play_time_str.c_str());
-//        outtextxy(600, 250, hp_str.c_str());
-//        show.end();
-//    }
-//}
-//
-//void test_ui() {  // menu, level, setting, developer, help
-//    int flag = 0;
-//    while (true) {
-//        switch (MainMenu()) {
-//        case 0:
-//            while (true) {
-//                switch (LevelSelect()) {
-//                case 0:
-//                    flag = 1;
-//                    break;
-//                case 1:  // ��һ��
-//                    // Ruins
-//                    break;
-//                case 2:  // �ڶ���
-//                    // Jungle
-//                    break;
-//                case 3:  // ������
-//                    // MilitaryBase
-//                    break;
-//                }
-//                if (flag == 1) {
-//                    flag = 0;
-//                    break;
-//                }
-//            }
-//            break;
-//        case 1:
-//            Settings();
-//            break;
-//        case 2:
-//            Help();
-//            break;
-//        case 3:
-//            Developers();
-//            break;
-//        case 4:
-//            exit(0);
-//        }
-//    }
-//}
-
-//int main() {
-//    TankBattle.InitUI("Tank Battle", 800, 600);  // ��ʼ������
-    //menu.add_button(340, 240, 120, 40, "GameStart");
-    //menu.add_button(340, 280, 120, 40, "Setting");
-    //menu.add_button(340, 320, 120, 40, "Help");
-    //menu.add_button(340, 360, 120, 40, "Developer");
-    //menu.add_button(340, 400, 120, 40, "Exit");
-    //level.add_button(40, 150, 150, 300, "Return");
-    //level.add_button(230, 150, 150, 300, "Ruins");
-    //level.add_button(420, 150, 150, 300, "Jungle");
-    //level.add_button(610, 150, 150, 300, "MilitaryBase");
-    //setting.add_button(40, 150, 150, 300, "Return");
-    //setting.add_button(230, 150, 150, 300, "AddVolume");
-    //setting.add_button(420, 150, 150, 300, "ReduceVolume");
-    //developer.add_button(0, 0, 800, 600);
-    //help.add_button(0, 0, 800, 600);
-    //show.add_button(600, 0, 200, 150);
-    //show.add_button(600, 150, 200, 450);
-//    test_ui();
-//    return 0;
-//}
-
-void GameWin() {  // ����ԭ�ͣ�void GameWin(const time_t& play_time);
-    int play_time = 100;
-    std::string time = std::to_string(play_time);
+void GameWin() {
     std::string time_str = "YOU WON!!!!";
     while (true) {
         win.begin();
@@ -193,13 +136,15 @@ void GameWin() {  // ����ԭ�ͣ�void GameWin(const time_t& play_time)
         win.PrintButton();
         setbkmode(TRANSPARENT);
         settextcolor(WHITE);
-        settextstyle(60, 0, "����");
+        settextstyle(60, 0, "黑体");
         outtextxy(170, 310, time_str.c_str());
         win.end();
         switch (win.CheckButton()) {
         case 0:
+            click_.play();
             return;
         case 1:
+            click_.play();
             exit(0);
         }
     }
@@ -214,13 +159,15 @@ void GameLose() {
         lose.PrintButton();
         setbkmode(TRANSPARENT);
         settextcolor(WHITE);
-        settextstyle(60, 0, "����");
+        settextstyle(60, 0, "黑体");
         outtextxy(290, 310, lose_str.c_str());
         lose.end();
         switch (lose.CheckButton()) {
         case 0:
+            click_.play();
             return;
         case 1:
+            click_.play();
             exit(0);
         }
     }
