@@ -3,23 +3,25 @@
 ui TankBattle, menu, level, setting, developer, help, show, stop, win, lose;
 
 int MainMenu() {  // ������
-    menu.begin();
-    menu.clear();
-    menu.PrintImage();
-    menu.PrintButton();
-    menu.end();
-    enum { GameStart, Setting, Help, Developer, Exit };
-    switch (menu.CheckButton()) {
-    case GameStart:
-        return 0;
-    case Setting:
-        return 1;
-    case Help:
-        return 2;
-    case Developer:
-        return 3;
-    case Exit:
-        return 4;
+    while(1){
+        menu.begin();
+        menu.clear();
+        menu.PrintImage();
+        menu.PrintButton();
+        menu.end();
+        enum { GameStart, Setting, Help, Developer, Exit };
+        switch (menu.CheckButton()) {
+        case GameStart:
+            return 0;
+        case Setting:
+            return 1;
+        case Help:
+            return 2;
+        case Developer:
+            return 3;
+        case Exit:
+            return 4;
+        }
     }
 }
 
