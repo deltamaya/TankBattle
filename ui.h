@@ -3,34 +3,32 @@
 #include <mmsystem.h>
 #include <list>
 #include <string>
-#include <iostream>
 #pragma comment(lib, "winmm.lib")
-using std::cout;
-using std::endl;
+
+void Settings();
+void GameStop();
+extern int flag_music_;
 
 class image {
-private:
+   private:
     std::string path_;
     int x_, y_;
     IMAGE img_;
-    
-public:
-    image(std::string path, int x = 0, int y = 0)
-        : path_(path), x_(x), y_(y) {
-        loadimage(&img_, path_.c_str());
-    };
+
+   public:
+    image(std::string path, int x = 0, int y = 0) : path_(path), x_(x), y_(y) { loadimage(&img_, path_.c_str()); };
     void draw() { putimage(x_, y_, &img_); }
 };
 
 class button {
-private:
+   private:
     int x_, y_, w_, h_;
     std::string text_;
     int line_color_;
     bool solid_;
     int full_color_;
 
-public:
+   public:
     button(int x, int y, int w, int h, std::string text = "", int color = WHITE, bool solid = 0, int full_color = RED)
         : x_(x), y_(y), w_(w), h_(h), text_(text), line_color_(color), solid_(solid), full_color_(full_color) {}
     void draw() {
@@ -38,15 +36,14 @@ public:
             setfillcolor(full_color_);
             setlinecolor(line_color_);
             fillrectangle(x_, y_, x_ + w_, y_ + h_);
-        }
-        else {
+        } else {
             setlinecolor(line_color_);
             rectangle(x_, y_, x_ + w_, y_ + h_);
         }
         if (!(text_ == "")) {
             setbkmode(TRANSPARENT);
             settextcolor(line_color_);
-            settextstyle(20, 0, "黑体");
+            settextstyle(25, 0, "黑体");
             outtextxy(x_ + w_ / 2 - textwidth(text_.c_str()) / 2, y_ + h_ / 2 - textheight(text_.c_str()) / 2, text_.c_str());
         }
     }
@@ -89,14 +86,14 @@ class music {
 };
 
 class ui {
-private:
+   private:
     ExMessage msg_;
     std::list<image> images_;
     std::list<button> buttons_;
-    
-public:
+
+   public:
     void InitUI(std::string title, int width, int height) {
-        initgraph(width, height);// EX_SHOWCONSOLE
+        initgraph(width, height);
         HWND hwnd = GetHWnd();
         SetWindowText(hwnd, title.c_str());
     };
@@ -144,5 +141,54 @@ public:
     };
 };
 
-void Settings();
-void ShowGameUI();
+class click {
+   public:
+    music click_;
+    click() : click_("./music\\click.wav", 1000){};
+    void play() {
+        click_.play();
+        click_.close();
+        if (flag_music_) {
+            click_.play();
+        }
+    }
+};
+
+class GameBegin {
+   public:
+    music begin_;
+    GameBegin() : begin_("./music\\GameBegin.mp3", 1000){};
+    void play() {
+        begin_.play();
+        begin_.close();
+        if (flag_music_) {
+            begin_.play();
+        }
+    }
+};
+
+class GameEnd {
+   public:
+    music end_;
+    GameEnd() : end_("./music\\GameOver.mp3", 1000){};
+    void play() {
+        end_.play();
+        end_.close();
+        if (flag_music_) {
+            end_.play();
+        }
+    }
+};
+
+class OpenFire {
+   public:
+    music fire_;
+    OpenFire() : fire_("./music\\OpenFire.mp3", 1000){};
+    void play() {
+        fire_.play();
+        fire_.close();
+        if (flag_music_) {
+            fire_.play();
+        }
+    }
+};
