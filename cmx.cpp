@@ -37,9 +37,16 @@ void NewGame(const int level, list<Enemy>& enemy_list, list<Bullet>& bullet_list
     string enemy_num_str = "Enemy: " + std::to_string(enemy_list.size());
     string hp_str = "HP: " + std::to_string(player.hp_);
     int sl = 100, sr = 500, st = 100, sd = 500;
+    vector<vector<int>> grass_map;
+    for (int i = 0; i < map.size(); i++) {
+        for (int j = 0; j < map[i].size(); j++) {
+            if (map[j][i] == GRASS) {
+                grass_map.push_back({ i, j });
+            }
+        }
+    }
     while (1) {
         static int ucount = 0;
-
         cout << player.direction_ << endl;
         for (auto e_iter = enemy_list.begin(); e_iter != enemy_list.end(); ++e_iter) {
             if (ucount % 2 == 0) {
@@ -59,12 +66,16 @@ void NewGame(const int level, list<Enemy>& enemy_list, list<Bullet>& bullet_list
             player.direction_ = LEFT;
         } else if (GetAsyncKeyState(68)) {
             player.direction_ = RIGHT;
-        } else if (GetAsyncKeyState(32)) {
+        } 
+        if (GetAsyncKeyState(32)) {
             if (player.fire_delay_ == 0) {
                 player.Fire(bullet_list);
                 if (flag_music_)
                     fire_.play();
             }
+        }
+        if (GetAsyncKeyState(VK_ESCAPE)) {
+            GameStop();
         }
         cout << enemy_list.size() << ' ' << bullet_list.size() << endl;
         const int LENGTH = 30;
@@ -108,9 +119,11 @@ void NewGame(const int level, list<Enemy>& enemy_list, list<Bullet>& bullet_list
                         putimage(i * LENGTH, j * LENGTH, &wall);
                     } else if (map[j][i] == BASE) {
                         putimage(i * LENGTH, j * LENGTH, &base);
-                    } else if (map[j][i] == GRASS) {
-                        putimage(i * LENGTH, j * LENGTH, &grass);
-                    }
+                    } 
+                    // else if (map[j][i] == GRASS) {
+                        // putimage(i * LENGTH, j * LENGTH, &grass);
+                        // grass_map.push_back({i, j});
+                    // }
                 }
             }
             if (i <= 10)
@@ -180,7 +193,9 @@ void NewGame(const int level, list<Enemy>& enemy_list, list<Bullet>& bullet_list
                 else
                     putimage(e.cur_position_.y_ * LENGTH + dy * ((i / 2) + 15), e.cur_position_.x_ * LENGTH + dx * ((i / 2) + 15), en);
             }
-
+            for (auto& g : grass_map) {
+                putimage(g[1] * LENGTH, g[0] * LENGTH, &grass);
+            }
             FlushBatchDraw();
             Sleep(10);
         }
@@ -188,9 +203,6 @@ void NewGame(const int level, list<Enemy>& enemy_list, list<Bullet>& bullet_list
         if (player.fire_delay_ > 0)
             --player.fire_delay_;
         ++pcount;
-        if (GetAsyncKeyState(VK_ESCAPE)) {
-            GameStop();
-        }
     }
 end:
     EndBatchDraw();

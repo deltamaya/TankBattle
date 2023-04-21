@@ -11,8 +11,8 @@ int MainMenu() {
     while (true) {
         menu.begin();
         menu.clear();
-        menu.PrintImage();
         menu.PrintButton();
+        menu.PrintImage();
         menu.end();
         enum { GameStart, Setting, Help, Developer, Exit, Tank };
         switch (menu.CheckButton()) {

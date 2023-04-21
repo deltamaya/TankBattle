@@ -18,12 +18,12 @@ IMAGE Bullet_img;
 extern ui TankBattle, menu, level, setting, developer, help, show, stop, win, lose;
 void InitUI() {
     menu.AddImage("./interface\\MainInterface.jpg");
-    menu.AddButton(340, 240, 120, 40, "GameStart", BLACK);
-    menu.AddButton(340, 280, 120, 40, "Setting", 0x3120b5);
-    menu.AddButton(340, 320, 120, 40, "Help", 0x20b531);
-    menu.AddButton(340, 360, 120, 40, "Developer", 0xFFD700);
-    menu.AddButton(340, 400, 120, 40, "Exit", 0xffffff);
-    menu.AddButton(200, 120, 400, 120);
+    menu.AddButton(340, 305, 120, 40, "开始游戏");
+    menu.AddButton(340, 345, 120, 40, "设置");
+    menu.AddButton(340, 385, 120, 40, "游戏说明");
+    menu.AddButton(340, 425, 120, 40, "开发者界面");
+    menu.AddButton(340, 465, 120, 40, "退出");
+    // menu.AddButton(0, 120, 800, 120);
     level.AddImage("./interface\\SelectLevel.jpg");
     level.AddButton(40, 150, 150, 300, "Return");
     level.AddButton(230, 150, 150, 300);
