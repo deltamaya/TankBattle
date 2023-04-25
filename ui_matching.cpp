@@ -1,13 +1,14 @@
 ﻿#include "ui.h"
 
-ui TankBattle, menu, level, setting, developer, help, show, stop, win, lose;
-int flag_music_ = 1;
+ui TankBattle, menu, level, setting, developer, help, show, stop, win, lose;  // 定义界面对象
+int flag_music_ = 1;                                                          // 定义音乐开关
+// 音效对象
 click click_;
 GameBegin begin_;
 GameEnd end_;
 OpenFire fire;
 
-int MainMenu() {
+int MainMenu() {  // 主菜单
     while (true) {
         menu.begin();
         menu.clear();
@@ -38,7 +39,7 @@ int MainMenu() {
     }
 }
 
-int LevelSelect() {
+int LevelSelect() {  // 关卡选择
     level.begin();
     level.clear();
     level.PrintImage();
@@ -70,7 +71,7 @@ int LevelSelect() {
     }
 }
 
-void Settings() {
+void Settings() {  // 设置
     while (true) {
         setting.begin();
         setting.clear();
@@ -97,7 +98,7 @@ void Settings() {
     }
 }
 
-void Developers() {
+void Developers() {  // 开发者，要换9张图，所以有点麻烦
     int flag = 0;
     while (true) {
         developer.begin();
@@ -214,7 +215,7 @@ void Developers() {
     }
 }
 
-void Help() {
+void Help() {  // 帮助
     while (true) {
         help.begin();
         help.clear();
@@ -228,7 +229,7 @@ void Help() {
     }
 }
 
-void GameWin() {
+void GameWin() {  // 游戏胜利
     std::string time_str = "YOU WON!!!";
     end_.play();
     while (true) {
@@ -252,7 +253,7 @@ void GameWin() {
     }
 }
 
-void GameLose() {
+void GameLose() {  // 游戏失败
     std::string lose_str = "You lose!";
     end_.play();
     while (true) {
@@ -276,7 +277,7 @@ void GameLose() {
     }
 }
 
-void GameStop() {
+void GameStop() {  // 游戏暂停
     while (true) {
         if (GetAsyncKeyState(VK_ESCAPE)) {
             return;
