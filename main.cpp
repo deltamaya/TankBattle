@@ -18,11 +18,11 @@ IMAGE Bullet_img;
 extern ui TankBattle, menu, level, setting, developer, help, show, stop, win, lose;
 void InitUI() {
     menu.AddImage("./interface\\MainInterface.jpg");
-    menu.AddButton(340, 305, 120, 40, "开始游戏");
-    menu.AddButton(340, 345, 120, 40, "设置");
-    menu.AddButton(340, 385, 120, 40, "游戏说明");
-    menu.AddButton(340, 425, 120, 40, "开发者界面");
-    menu.AddButton(340, 465, 120, 40, "退出");
+    menu.AddButton(302, 180, 180, 40, "开始游戏");
+    menu.AddButton(330, 245, 120, 40, "设置");
+    menu.AddButton(350, 310, 80, 40, "游戏说明");
+    menu.AddButton(300, 370, 180, 40, "开发者界面");
+    menu.AddButton(350, 434, 80, 40, "退出");
     // menu.AddButton(0, 120, 800, 120);
     level.AddImage("./interface\\SelectLevel.jpg");
     level.AddButton(40, 150, 150, 300, "Return");
@@ -146,7 +146,7 @@ void InitMap(const int& level, list<Enemy>& enemy_list, list<Bullet>& bullet_lis
         case 1: {
             map = level_1;
             player = {{1, 1}, UP};
-            player.hp_ = 10;
+            player.hp_ = 5;
             Enemy e1 = {enemy_list, {18, 18}, NONE};
             enemy_list.push_back(e1);
             Enemy e2 = {enemy_list, {16, 18}, NONE};
